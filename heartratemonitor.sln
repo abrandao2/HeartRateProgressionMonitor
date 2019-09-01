@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "heartratemonitor", "heartratemonitor\heartratemonitor.vcxproj", "{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Debug|x64.ActiveCfg = Debug|x64
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Debug|x64.Build.0 = Debug|x64
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Debug|x86.ActiveCfg = Debug|Win32
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Debug|x86.Build.0 = Debug|Win32
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Release|x64.ActiveCfg = Release|x64
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Release|x64.Build.0 = Release|x64
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Release|x86.ActiveCfg = Release|Win32
+		{0DE6BBE0-9C10-4533-9AFD-EF2DB4B6E799}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69B65EE7-1826-4D30-B480-2BA55517E2E8}
+	EndGlobalSection
+EndGlobal
