@@ -23,4 +23,4 @@ A program to track my heart rates daily since I started running.
 
 ## Data Visualization
 ### More than two weeks running. In this case, good news, since the mean rate has improved.
-![Data Visualization with Decreased Mean Rate)(https://raw.githubusercontent.com/dev01766/HeartRateProgressionMonitor/master/README%20images/07.png)
+![Data Visualization with Decreased Mean Rate](https://raw.githubusercontent.com/dev01766/HeartRateProgressionMonitor/master/README%20images/07.png)
