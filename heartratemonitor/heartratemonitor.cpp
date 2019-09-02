@@ -320,6 +320,7 @@ void additionalInfo(vector<double> means) {
 	}
 }
 
+// Display left border
 void leftBorder() {
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << ' ' << (char)186 << ' ';											// ║
@@ -337,7 +338,7 @@ void rightBorder(int length) {
 
 // Display the main menu
 void menu(bool full) {
-	int option;
+	string option;
 	
 	if (full) {
 		// Welcoming messages
@@ -360,32 +361,38 @@ void menu(bool full) {
 	// Get option
 	do {
 		cin >> option;
+		
+		// Certify input is correct
+		try {
+			switch (stoi(option)) {
+			case 0:
+				displayData();
+				break;
+			case 1:
+				inputData();
+				break;
+			case 2:
+				deleteLastEntry();
+				break;
+			case 3:
+				exit(0);
+				break;
+			default:
+				SetConsoleTextAttribute(hConsole, 207);
+				cout << "\nInvalid option. Try again!\n";
+				SetConsoleTextAttribute(hConsole, 15);
+				break;
+			}
+		}
+		catch (invalid_argument) {
+			SetConsoleTextAttribute(hConsole, 207);
+			cout << "Invalid argument. Try again!\n";
+			SetConsoleTextAttribute(hConsole, 15);
+		}
 
-		if (option < 0 || option > 3) {
-			cout << "\nInvalid option. Try again!\n";
-		}
-		else {
-			break;
-		}
 	} while (true);
 
 	hr();
-
-	// Route to selected function
-	switch (option) {
-	case 0:
-		displayData();
-		break;
-	case 1:
-		inputData();
-		break;
-	case 2:
-		deleteLastEntry();
-		break;
-	case 3:
-		exit(0);
-		break;
-	}
 }
 
 // Ask for another input
@@ -396,10 +403,8 @@ bool anotherCommand() {
 	cout << "  Another command? ";
 	
 	do {
-		cin >> answer;
-
-		if (answer != 'y' && answer != 'n') {
-			cout << "  Invalid option. Try again!" << endl;
+		if(!(cin >> answer) || answer != 'y' && answer != 'n') {
+			cout << "\n  Invalid option. Try again!\n  ";
 		}
 		else if (answer == 'y') {
 			return true;
