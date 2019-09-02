@@ -32,6 +32,8 @@ void inputData();
 void deleteLastEntry();
 void additionalInfo(vector<double> means);
 void rightBorder(int length);
+void menu(bool full);
+bool anotherCommand();
 
 template <class T>
 void graphicBar(vector<T> rates, bool mean = false);
@@ -41,47 +43,7 @@ int main() {
     // Print splash screen
 	splash();
 
-	// Variables
-	int option;
-
-	// Welcoming messages
-	SetConsoleTextAttribute(hConsole, 160);
-	cout << setw(86) << setfill(' ') << left;
-	cout << "Welcome to the Heart Rate Progression Monitor" << endl;
-	SetConsoleTextAttribute(hConsole, 32);
-	cout << setw(86) << setfill(' ') << left;
-	cout << "Select an option (0 - Display data; 1 - Insert data; 2 - Delete last entry; 3 - exit):" << endl;
-	SetConsoleTextAttribute(hConsole, 15);
-	
-	// Get option
-	do {
-		cin >> option;
-
-		if (option < 0 || option > 3) {
-			cout << "Invalid option. Try again!";
-		}
-		else {
-			break;
-		}
-	} while (true);
-
-	hr();
-
-	// Route to selected function
-	switch (option) {
-	case 0:
-		displayData();
-		break;
-	case 1:
-		inputData();
-		break;
-	case 2:
-		deleteLastEntry();
-		break;
-	case 3:
-		exit(0);
-		break;
-	}
+	menu(true);
 
 	system("pause");
 	return 0;
@@ -190,10 +152,9 @@ void displayData() {
 
 	system("cls");
 
+	// Display rates bars
 	upperFrame();
-
 	graphicBar(rates);
-
 	bottomFrame();
 
 	// Display current heart rate mean
@@ -202,18 +163,25 @@ void displayData() {
 	SetConsoleTextAttribute(hConsole, 15);			// Red/Black
 	cout << "  Current mean: " << endl;
 
+	// Display means bars
 	upperFrame();
 	graphicBar(means, true);
 	bottomFrame();
 
 	// Display additional information
 	additionalInfo(means);
+
+	// Clean vector<int> rates
+	rates.clear();
+
+	// Ask for another command
+	(anotherCommand()) ? menu(false) : exit(0);
 }
 
 // Receive input
 void inputData() {
 	int heartRate;
-	struct tm initialDate = { 0, 0, 0, 28, 8, 119 };
+	// struct tm initialDate = { 0, 0, 0, 28, 8, 119 };
 
 	cout << "Insert today's heart rate: " << endl;
 
@@ -236,8 +204,11 @@ void inputData() {
 	out << ',';
 	out.close();
 
-	// Change color and display bars
+	// Display bars
 	displayData();
+
+	// Ask for another command
+	(anotherCommand()) ? menu(false) : exit(0);
 }
 
 // Delete last entry from database
@@ -258,11 +229,11 @@ void deleteLastEntry() {
 	out << newInput;
 	out.close();
 
-	displayData();
-
 	SetConsoleTextAttribute(hConsole, 207);
 	cout << "\n  Last registry succesfully removed!" << endl;
 	SetConsoleTextAttribute(hConsole, 0);
+
+	displayData();
 }
 
 // Display graphic bar based on input
@@ -362,4 +333,79 @@ void rightBorder(int length) {
 	SetConsoleTextAttribute(hConsole, 10);							// Green/Black
 	cout << (char)186;												// ║
 	cout << endl;
+}
+
+// Display the main menu
+void menu(bool full) {
+	int option;
+	
+	if (full) {
+		// Welcoming messages
+		SetConsoleTextAttribute(hConsole, 160);
+		cout << setw(86) << setfill(' ') << left;
+		cout << "Welcome to the Heart Rate Progression Monitor" << endl;
+		SetConsoleTextAttribute(hConsole, 32);
+		cout << setw(86) << setfill(' ') << left;
+		cout << "Select an option (0 - Display data; 1 - Insert data; 2 - Delete last entry; 3 - exit):" << endl;
+		SetConsoleTextAttribute(hConsole, 15);
+	}
+	else {
+		system("cls");
+		SetConsoleTextAttribute(hConsole, 32);
+		cout << setw(86) << setfill(' ') << left;
+		cout << "Select an option (0 - Display data; 1 - Insert data; 2 - Delete last entry; 3 - exit):" << endl;
+		SetConsoleTextAttribute(hConsole, 15);
+	}
+
+	// Get option
+	do {
+		cin >> option;
+
+		if (option < 0 || option > 3) {
+			cout << "\nInvalid option. Try again!\n";
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	hr();
+
+	// Route to selected function
+	switch (option) {
+	case 0:
+		displayData();
+		break;
+	case 1:
+		inputData();
+		break;
+	case 2:
+		deleteLastEntry();
+		break;
+	case 3:
+		exit(0);
+		break;
+	}
+}
+
+// Ask for another input
+bool anotherCommand() {
+	char answer;
+
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << "  Another command? ";
+	
+	do {
+		cin >> answer;
+
+		if (answer != 'y' && answer != 'n') {
+			cout << "  Invalid option. Try again!" << endl;
+		}
+		else if (answer == 'y') {
+			return true;
+		}
+		else {
+			return false;
+		}
+	} while (true);
 }

@@ -1,4 +1,4 @@
 ﻿  heartratemonitor.cpp
-C:\Users\dev01766\source\repos\heartratemonitor\heartratemonitor\heartratemonitor.cpp(186,20): warning C4018:  '<': incompatibilidade de signed/unsigned
-C:\Users\dev01766\source\repos\heartratemonitor\heartratemonitor\heartratemonitor.cpp(252,20): warning C4018:  '<': incompatibilidade de signed/unsigned
+C:\Users\dev01766\source\repos\heartratemonitor\heartratemonitor\heartratemonitor.cpp(148,20): warning C4018:  '<': incompatibilidade de signed/unsigned
+C:\Users\dev01766\source\repos\heartratemonitor\heartratemonitor\heartratemonitor.cpp(223,20): warning C4018:  '<': incompatibilidade de signed/unsigned
   heartratemonitor.vcxproj -> C:\Users\dev01766\source\repos\heartratemonitor\Debug\heartratemonitor.exe
