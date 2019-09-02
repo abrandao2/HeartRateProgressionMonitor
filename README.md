@@ -1,5 +1,5 @@
 # HeartRateProgressionMonitor
-A program to track my heart rates daily since I started running.
+A retro looking program to track my heart rates daily since I started running.
 
 ## Splash Screen
 ![Splash Screen](https://raw.githubusercontent.com/dev01766/HeartRateProgressionMonitor/master/README%20images/01.png)
