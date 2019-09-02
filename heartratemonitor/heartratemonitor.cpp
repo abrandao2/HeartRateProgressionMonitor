@@ -1,3 +1,15 @@
+/**
+	Heart Rate Progression Monitor
+	heartratemonitor.cpp
+	Purpose: Register the daily heart rates from the user who started running. After one week, it
+	provides weekly mean rate comparisons, so the user knows if his heart condition has improved
+	compared to last week's AND compared to the first week's. It has no scientific substantiation
+	whatsover. This is just a personal experiment.
+
+	@author André Silva
+	@version  1.0 02/09/19
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,24 +33,81 @@ vector<int> rates;
 string input;
 
 // Functions prototypes
-void additionalInfo(vector<double> means);
-bool anotherCommand();
-void bottomFrame();
-vector<double> calculatemean(vector<int> rates);
-void deleteLastEntry();
-void displayData();
-void hr();
-void inputData();
-void leftBorder();
-void menu(bool full);
-void rightBorder(int length);
-void splash();
-void upperFrame();
+/**
+	Provide additional information to the user, like if it their first week running and, if not,
+	if the mean weekly heart rate has improved or degraded compared to the last and first week.
 
+	@param means a vector with the weakly heart rate means
+*/
+void additionalInfo(vector<double> means);
+/**
+	Ask the user if they want to perform another command.
+*/
+bool anotherCommand();
+/**
+	Print a bottom frame.
+*/
+void bottomFrame();
+/**
+	Calculate every week's heart rates mean, even incomplete ones, and return a vector
+	with these means.
+
+	@param rates a vector<int> with all the daily rates from the storage file.
+	@return a vector<double> with all the weekly means.
+*/
+vector<double> calculatemean(vector<int> rates);
+/**
+	Delete last entry from database txt file.
+*/
+void deleteLastEntry();
+/**
+	Display the stored data in form of daily horizontal bars.
+*/
+void displayData();
+/**
+	Print a horizontal bar.
+*/
+void hr();
+/**
+	Ask for input, certify it is correct and store it into the txt database file.
+*/
+void inputData();
+/**
+	Print a left border.
+*/
+void leftBorder();
+/**
+	Print either the full version of the menu or half of it. The half is meant for when
+	the user wants to perform some action again and, thus, omits the welcome message.
+
+	@param full a boolean that, if true, prints the full menu. If not, prints half of it.
+*/
+void menu(bool full);
+/**
+	Print a right border. This is more complex than leftBorder(), because it takes into
+	consideration the length of the current line, in order to place the right border in
+	the right place.
+
+	@param length the offset for printing the right border.
+*/
+void rightBorder(int length);
+/**
+	Print the retro looking splash screen.
+*/
+void splash();
+/**
+	Print an upper frame.
+*/
+void upperFrame();
+/**
+	Print a graphic bar. It is meant to receive either a vector<int> or a vector<double>.
+
+	@param rates represents either daily rates or mean rates.
+	@param mean the aforementioned distinction is provided by this flag.
+*/
 template <class T>
 void graphicBar(vector<T> rates, bool mean = false);
 
-// Main function
 int main() {
     // Print splash screen
 	splash();
@@ -49,7 +118,6 @@ int main() {
 	return 0;
 }
 
-// Splash screen
 void splash() {
 	SetConsoleTextAttribute(hConsole, 12);
 	cout << "                                                         " << endl;
@@ -83,7 +151,6 @@ void splash() {
 	cout << "\a" << flush;
 }
 
-// Draw horizontal line
 void hr() {
 	for (int i = 0; i < 84; i++) {
 		cout << (char)196;	// ──
@@ -91,7 +158,6 @@ void hr() {
 	cout << endl;
 }
 
-// Draw upper frame in results
 void upperFrame() {
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << ' ' << (char)201;			// ╔
@@ -103,7 +169,6 @@ void upperFrame() {
 	cout << (char)187 << endl;			// ╗
 }
 
-// Draw bottom frame in results
 void bottomFrame() {
 	cout << ' ' << (char)200;			// ╚
 
@@ -114,7 +179,6 @@ void bottomFrame() {
 	cout << (char)188 << endl;			// ╝
 }
 
-// Calculate Heart Rate mean
 vector<double> calculatemean(vector<int> rates) {
 	int total = 0;
 	int counter = 0;
@@ -136,7 +200,6 @@ vector<double> calculatemean(vector<int> rates) {
 	return means;
 }
 
-// Display data stored in horizontal bars format
 void displayData() {
 	string rate;
 
@@ -178,7 +241,6 @@ void displayData() {
 	(anotherCommand()) ? menu(false) : exit(0);
 }
 
-// Receive input
 void inputData() {
 	int heartRate;
 	// struct tm initialDate = { 0, 0, 0, 28, 8, 119 };
@@ -211,7 +273,6 @@ void inputData() {
 	(anotherCommand()) ? menu(false) : exit(0);
 }
 
-// Delete last entry from database
 void deleteLastEntry() {
 	in.open("input.txt");
 	in >> input;
@@ -236,7 +297,6 @@ void deleteLastEntry() {
 	displayData();
 }
 
-// Display graphic bar based on input
 template <class T>
 void graphicBar(vector<T> rates, bool mean) {
 	int temp = 0;
@@ -266,7 +326,6 @@ void graphicBar(vector<T> rates, bool mean) {
 	}
 }
 
-// Display additional information regarding variation in the heart rate means
 void additionalInfo(vector<double> means) {
 	int size = means.size();
 	double varLastWeek;
@@ -320,13 +379,11 @@ void additionalInfo(vector<double> means) {
 	}
 }
 
-// Display left border
 void leftBorder() {
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << ' ' << (char)186 << ' ';											// ║
 }
 
-// Display right border, given the length of the text printed before it
 void rightBorder(int length) {
 	for (int i = 0; i < 86 - length; i++) {							// Fill the remaining space
 		cout << ' ';
@@ -336,7 +393,6 @@ void rightBorder(int length) {
 	cout << endl;
 }
 
-// Display the main menu
 void menu(bool full) {
 	string option;
 	
@@ -395,7 +451,6 @@ void menu(bool full) {
 	hr();
 }
 
-// Ask for another input
 bool anotherCommand() {
 	char answer;
 
