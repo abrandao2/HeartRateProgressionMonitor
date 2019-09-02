@@ -29,8 +29,7 @@ ifstream in;
 ofstream out;
 
 // Global variables
-vector<int> rates;
-string input;
+
 
 // Functions prototypes
 /**
@@ -202,6 +201,8 @@ vector<double> calculatemean(vector<int> rates) {
 
 void displayData() {
 	string rate;
+	vector<int> rates;
+	string input;
 
 	// Process gathered information
 	in.open("input.txt");
@@ -274,6 +275,8 @@ void inputData() {
 }
 
 void deleteLastEntry() {
+	string input;
+
 	in.open("input.txt");
 	in >> input;
 	in.close();
