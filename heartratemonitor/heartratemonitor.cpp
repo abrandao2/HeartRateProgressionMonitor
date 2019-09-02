@@ -21,19 +21,19 @@ vector<int> rates;
 string input;
 
 // Functions prototypes
-void splash();
-void hr();
-void upperFrame();
-void bottomFrame();
-void leftBorder();
-vector<double> calculatemean(vector<int> rates);
-void displayData();
-void inputData();
-void deleteLastEntry();
 void additionalInfo(vector<double> means);
-void rightBorder(int length);
-void menu(bool full);
 bool anotherCommand();
+void bottomFrame();
+vector<double> calculatemean(vector<int> rates);
+void deleteLastEntry();
+void displayData();
+void hr();
+void inputData();
+void leftBorder();
+void menu(bool full);
+void rightBorder(int length);
+void splash();
+void upperFrame();
 
 template <class T>
 void graphicBar(vector<T> rates, bool mean = false);
