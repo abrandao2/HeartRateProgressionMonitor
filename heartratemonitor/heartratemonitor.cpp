@@ -19,6 +19,18 @@
 #include <dos.h>
 #include <math.h>
 
+// Define color constants
+#define GW SetConsoleTextAttribute(hConsole, 242);
+#define BdG SetConsoleTextAttribute(hConsole, 32);
+#define BlG SetConsoleTextAttribute(hConsole, 160);
+#define WR SetConsoleTextAttribute(hConsole, 207);
+#define WB SetConsoleTextAttribute(hConsole, 15);
+#define RB SetConsoleTextAttribute(hConsole, 12);
+#define OB SetConsoleTextAttribute(hConsole, 6);
+#define lGB SetConsoleTextAttribute(hConsole, 10);
+#define BB SetConsoleTextAttribute(hConsole, 0);
+#define dGB SetConsoleTextAttribute(hConsole, 2);
+
 using namespace std;
 
 // Color handler
@@ -27,9 +39,6 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 // IO variables
 ifstream in;
 ofstream out;
-
-// Global variables
-
 
 // Functions prototypes
 /**
@@ -118,7 +127,7 @@ int main() {
 }
 
 void splash() {
-	SetConsoleTextAttribute(hConsole, 12);
+	RB;
 	cout << "                                                         " << endl;
 	cout << "                                                         " << endl;
 	cout << "  ooooo   ooooo ooooooooo.   ooooooooo.   ooo        ooooo " << char(177) << char(177) << char(177) << char(177) << char(177) << char(177) << char(177) << char(177) << char(177) << char(177) << char(176) << char(176) << char(176) << char(176) << char(176) << char(176) << char(176) << char(176) << char(176) << char(176) << endl;
@@ -137,7 +146,7 @@ void splash() {
 	Sleep(200);
 	cout << "                                                         " << endl;
 	cout << "                                                         " << endl;
-	SetConsoleTextAttribute(hConsole, 6);
+	OB;
 	cout << "         ___   _    __  ____    __    _  ____  ___                                                   " << endl;
 	cout << "   )__/ (_    /_|  /__)  /     /__)  /_|  /   (_                                                     " << endl;
 	cout << "  / _/  /___ (  |_/ ( __(   __/ (___(  |_(  __/__   __                 __           ____   __    __  " << endl;
@@ -158,7 +167,7 @@ void hr() {
 }
 
 void upperFrame() {
-	SetConsoleTextAttribute(hConsole, 10);
+	lGB;
 	cout << ' ' << (char)201;			// ╔
 
 	for (int i = 0; i < 84; i++) {
@@ -169,6 +178,7 @@ void upperFrame() {
 }
 
 void bottomFrame() {
+	lGB;
 	cout << ' ' << (char)200;			// ╚
 
 	for (int i = 0; i < 84; i++) {
@@ -224,7 +234,7 @@ void displayData() {
 	// Display current heart rate mean
 	vector<double> means = calculatemean(rates);
 
-	SetConsoleTextAttribute(hConsole, 15);			// Red/Black
+	WB;
 	cout << "  Current mean: " << endl;
 
 	// Display means bars
@@ -246,14 +256,22 @@ void inputData() {
 	int heartRate;
 	// struct tm initialDate = { 0, 0, 0, 28, 8, 119 };
 
-	cout << "Insert today's heart rate: " << endl;
+	cout << "Insert today's heart rate or ";
+	WR;
+	cout << "999";
+	WB;
+	cout << " to cancel : " << endl;
 
 	// Assure correct input
 	do {
 		cin >> heartRate;
-		cout << endl;
+		cout << endl << endl;
 
-		if (heartRate > 200 || heartRate < 100) {
+		if (heartRate == 999) {
+			system("cls");
+			menu(true);
+		}
+		else if (heartRate > 200 || heartRate < 100) {
 			cout << "Informed value. It must be between 100 and 200. Try again!" << endl;
 		}
 		else {
@@ -293,9 +311,9 @@ void deleteLastEntry() {
 	out << newInput;
 	out.close();
 
-	SetConsoleTextAttribute(hConsole, 207);
+	WR;
 	cout << "\n  Last registry succesfully removed!" << endl;
-	SetConsoleTextAttribute(hConsole, 0);
+	BB;
 
 	displayData();
 }
@@ -307,25 +325,31 @@ void graphicBar(vector<T> rates, bool mean) {
 	int size = rates.size();
 
 	for (int i = 0; i < size; i++) {
-		SetConsoleTextAttribute(hConsole, 10);		// Green/Black
+		lGB;
 
 		temp = (int)rates[i] / 3;
 
 		leftBorder();								// Display left border
 
 		for (int i = 0; i < temp; i++) {
-			mean ? SetConsoleTextAttribute(hConsole, 12) : SetConsoleTextAttribute(hConsole, 2);
+			if (mean) {
+				RB;
+			}
+			else {
+				dGB;
+			}
+
 			cout << (char)254;						// ■■
 		}
 
-		SetConsoleTextAttribute(hConsole, 12);		// Red/Black
+		RB;
 		cout << ' ' << rates[i];
 
 		for (int i = 0; i < 79 - temp; i++) {		// Fill the remaining space
 			cout << ' ';
 		}
 
-		SetConsoleTextAttribute(hConsole, 10);		// Green/Black
+		lGB;
 		cout << (char)186;							// ║
 		cout << endl;
 
@@ -362,18 +386,24 @@ void additionalInfo(vector<double> means) {
 		varLastWeek = (int)(varLastWeek / 0.01) * 0.01;
 		varFirstWeek = (int)(varFirstWeek / 0.01) * 0.01;
 
-		SetConsoleTextAttribute(hConsole, 15);										// White/Black
+		WB;
 		cout << "  The mean variation between last week and now is: ";
 
 		// Changes result's color to green, if variation negative, or red, if positive
-		(varLastWeek < 0) ? SetConsoleTextAttribute(hConsole, 160) : SetConsoleTextAttribute(hConsole, 207);
+		if (varLastWeek < 0) {
+			BlG;
+		}
+		else {
+			WR;
+		}
+
 		cout << varLastWeek << '%' << endl;
 
 		upperFrame();
 		leftBorder();
 		
 		// Inform if variation has been negative or positive
-		SetConsoleTextAttribute(hConsole, 15);										// White/Black
+		WB;
 		if (varLastWeek < 0) {
 			cout << "Good news! Your mean heart rate has decreased comparted to last week!";
 			rightBorder(3 + 69);
@@ -386,22 +416,22 @@ void additionalInfo(vector<double> means) {
 		bottomFrame();
 
 		// Inform how the mean rate has varied since user started running
-		SetConsoleTextAttribute(hConsole, 15);
+		WB;
 		cout << "  Since you started running, the mean variation has been: " 
 			 << varFirstWeek << '%' << endl;
 	}
 	else {
 		upperFrame();
 		leftBorder();
-		SetConsoleTextAttribute(hConsole, 12);
-		cout << "That's still your first week running!";
+		RB;
+		cout << "That's still your first week running!\n";
 		rightBorder(3 + 37);
 		bottomFrame();
 	}
 }
 
 void leftBorder() {
-	SetConsoleTextAttribute(hConsole, 10);
+	lGB;
 	cout << ' ' << (char)186 << ' ';											// ║
 }
 
@@ -409,7 +439,7 @@ void rightBorder(int length) {
 	for (int i = 0; i < 86 - length; i++) {							// Fill the remaining space
 		cout << ' ';
 	}
-	SetConsoleTextAttribute(hConsole, 10);							// Green/Black
+	lGB;
 	cout << (char)186;												// ║
 	cout << endl;
 }
@@ -419,52 +449,67 @@ void menu(bool full) {
 	
 	if (full) {
 		// Welcoming messages
-		SetConsoleTextAttribute(hConsole, 160);
+		BlG;
 		cout << setw(86) << setfill(' ') << left;
 		cout << "Welcome to the Heart Rate Progression Monitor" << endl;
-		SetConsoleTextAttribute(hConsole, 32);
-		cout << setw(86) << setfill(' ') << left;
-		cout << "Select an option (0 - Display data; 1 - Insert data; 2 - Delete last entry; 3 - exit):" << endl;
-		SetConsoleTextAttribute(hConsole, 15);
+		BdG;
+		cout << "Select an option (";
+		GW; cout << " 1 "; BdG;
+		cout << " Display data; "; 
+		GW; cout << " 2 "; BdG;
+		cout << " Insert data; ";
+		GW; cout << " 3 "; BdG;
+		cout << " Delete last entry; ";
+		WR; cout << " 0 "; BdG;
+		cout << " exit):" << endl;
+		WB;
 	}
 	else {
 		system("cls");
-		SetConsoleTextAttribute(hConsole, 32);
-		cout << setw(86) << setfill(' ') << left;
-		cout << "Select an option (0 - Display data; 1 - Insert data; 2 - Delete last entry; 3 - exit):" << endl;
-		SetConsoleTextAttribute(hConsole, 15);
+		BdG;
+		cout << "Select an option (";
+		GW; cout << " 1 "; BdG;
+		cout << " Display data; ";
+		GW; cout << " 2 "; BdG;
+		cout << " Insert data; ";
+		GW; cout << " 3 "; BdG;
+		cout << " Delete last entry; ";
+		WR; cout << " 0 "; BdG;
+		cout << " exit):" << endl;
+		WB;
 	}
 
 	// Get option
 	do {
 		cin >> option;
+		cout << endl;
 		
 		// Certify input is correct
 		try {
 			switch (stoi(option)) {
-			case 0:
+			case 1:
 				displayData();
 				break;
-			case 1:
+			case 2:
 				inputData();
 				break;
-			case 2:
+			case 3:
 				deleteLastEntry();
 				break;
-			case 3:
+			case 0:
 				exit(0);
 				break;
 			default:
-				SetConsoleTextAttribute(hConsole, 207);
+				WR;
 				cout << "\nInvalid option. Try again!\n";
-				SetConsoleTextAttribute(hConsole, 15);
+				WB;
 				break;
 			}
 		}
 		catch (invalid_argument) {
-			SetConsoleTextAttribute(hConsole, 207);
+			WR;
 			cout << "Invalid argument. Try again!\n";
-			SetConsoleTextAttribute(hConsole, 15);
+			WB;
 		}
 
 	} while (true);
@@ -475,7 +520,7 @@ void menu(bool full) {
 bool anotherCommand() {
 	char answer;
 
-	SetConsoleTextAttribute(hConsole, 10);
+	lGB;
 	cout << "  Another command? ";
 	
 	do {
