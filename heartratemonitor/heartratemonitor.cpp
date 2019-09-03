@@ -304,11 +304,12 @@ template <class T>
 void graphicBar(vector<T> rates, bool mean) {
 	int temp = 0;
 	int count = 1;
+	int size = rates.size();
 
-	for (T rate : rates) {
+	for (int i = 0; i < size; i++) {
 		SetConsoleTextAttribute(hConsole, 10);		// Green/Black
 
-		temp = (int)rate / 3;
+		temp = (int)rates[i] / 3;
 
 		leftBorder();								// Display left border
 
@@ -318,7 +319,7 @@ void graphicBar(vector<T> rates, bool mean) {
 		}
 
 		SetConsoleTextAttribute(hConsole, 12);		// Red/Black
-		cout << ' ' << rate;
+		cout << ' ' << rates[i];
 
 		for (int i = 0; i < 79 - temp; i++) {		// Fill the remaining space
 			cout << ' ';
@@ -329,7 +330,7 @@ void graphicBar(vector<T> rates, bool mean) {
 		cout << endl;
 
 		// Print horizontal bar to divide results by week
-		if (count == 7) {
+		if (count == 7 && i != size - 1) {
 			cout << ' ' << (char)204;				// ╠
 
 			for (int i = 0; i < 84; i++) {
@@ -340,8 +341,9 @@ void graphicBar(vector<T> rates, bool mean) {
 
 			count = 1;
 		}
-
-		count++;
+		else {
+			count++;
+		}
 	}
 }
 
