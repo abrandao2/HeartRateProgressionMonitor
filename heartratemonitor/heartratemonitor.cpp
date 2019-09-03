@@ -424,7 +424,7 @@ void additionalInfo(vector<double> means) {
 		upperFrame();
 		leftBorder();
 		RB;
-		cout << "That's still your first week running!\n";
+		cout << "That's still your first week running!";
 		rightBorder(3 + 37);
 		bottomFrame();
 	}
