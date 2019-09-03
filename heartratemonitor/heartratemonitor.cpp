@@ -303,6 +303,7 @@ void deleteLastEntry() {
 template <class T>
 void graphicBar(vector<T> rates, bool mean) {
 	int temp = 0;
+	int count = 1;
 
 	for (T rate : rates) {
 		SetConsoleTextAttribute(hConsole, 10);		// Green/Black
@@ -326,6 +327,21 @@ void graphicBar(vector<T> rates, bool mean) {
 		SetConsoleTextAttribute(hConsole, 10);		// Green/Black
 		cout << (char)186;							// ║
 		cout << endl;
+
+		// Print horizontal bar to divide results by week
+		if (count == 7) {
+			cout << ' ' << (char)204;				// ╠
+
+			for (int i = 0; i < 84; i++) {
+				cout << (char)205;					// ══
+			}
+
+			cout << (char)185 << endl;				// ╣
+
+			count = 1;
+		}
+
+		count++;
 	}
 }
 
