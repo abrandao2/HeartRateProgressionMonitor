@@ -191,18 +191,27 @@ void bottomFrame() {
 vector<double> calculatemean(vector<int> rates) {
 	int total = 0;
 	int counter = 0;
+	int zeroes = 0;
 	int size = rates.size();
+	int weekSize = 7;
 	vector<double> means;
 
 	// Populate means array
 	for (int i = 0; i < size; i++) {
 		total += rates[i];
 
+		if (rates[i] == 0) {
+			weekSize--;
+			zeroes++;
+		}
+
 		if ((i + 1) % 7 == 0) {						
-			means.push_back(total / 7);				// If a whole week is complete, calculate mean
+			means.push_back(total / weekSize);				// If a whole week is complete, calculate mean discouting zeroes
 			total = 0;
-		} else if (i == size - 1) {
-			means.push_back(total / (size % 7));	// Calculate the mean of the remaining rates
+			weekSize = 7;
+			zeroes = 0;
+		} else if (i == size - 1) {							// If not, it finds the remaining amount of days and divides by the amount of days that aren't 0
+			means.push_back(total / ((size % 7) - zeroes));
 		}
 	}
 
@@ -256,9 +265,13 @@ void inputData() {
 	int heartRate;
 	// struct tm initialDate = { 0, 0, 0, 28, 8, 119 };
 
-	cout << "Insert today's heart rate or ";
+	cout << "Insert today's heart rate, ";
 	WR;
-	cout << "999";
+	cout << " 0 ";
+	WB;
+	cout << " if you did not run or ";
+	WR;
+	cout << " 999 ";
 	WB;
 	cout << " to cancel : " << endl;
 
@@ -271,8 +284,11 @@ void inputData() {
 			system("cls");
 			menu(true);
 		}
+		else if (heartRate == 0) {
+			break;
+		}
 		else if (heartRate > 200 || heartRate < 100) {
-			cout << "Informed value. It must be between 100 and 200. Try again!" << endl;
+			cout << "Invalid value. It must be between 100 and 200. Try again!" << endl;
 		}
 		else {
 			break;
@@ -281,7 +297,10 @@ void inputData() {
 
 	// Input new information into the storage file
 	out.open("input.txt", ios::app);
-	out << heartRate;
+	if (heartRate == 0)
+		out << "000";
+	else
+		out << heartRate;
 	out << ',';
 	out.close();
 
@@ -331,37 +350,50 @@ void graphicBar(vector<T> rates, bool mean) {
 
 		leftBorder();								// Display left border
 
-		for (int i = 0; i < temp; i++) {
-			if (mean) {
-				RB;
-			}
-			else {
-				dGB;
-			}
+		// Change color of bar if it is meant to show the weekly means
+		if (mean) {
+			RB;
+		}
+		else {
+			dGB;
+		}
 
-			cout << (char)254;						// ■■
+		if (rates[i] == 0) {
+			cout << "Didn't run.";
+		}
+		else {
+			for (int i = 0; i < temp; i++) {
+				cout << (char)254;						// ■■
+			}
 		}
 
 		RB;
 		cout << ' ' << rates[i];
 
-		for (int i = 0; i < 79 - temp; i++) {		// Fill the remaining space
-			cout << ' ';
+		if (rates[i] == 0) {
+			for (int i = 0; i < 81 - 11; i++) {			// Fill the remaining space
+				cout << ' ';
+			}
+		}
+		else {
+			for (int i = 0; i < 79 - temp; i++) {		// Fill the remaining space
+				cout << ' ';
+			}
 		}
 
 		lGB;
-		cout << (char)186;							// ║
+		cout << (char)186;								// ║
 		cout << endl;
 
 		// Print horizontal bar to divide results by week
 		if (count == 7 && i != size - 1) {
-			cout << ' ' << (char)204;				// ╠
+			cout << ' ' << (char)204;					// ╠
 
 			for (int i = 0; i < 84; i++) {
-				cout << (char)205;					// ══
+				cout << (char)205;						// ══
 			}
 
-			cout << (char)185 << endl;				// ╣
+			cout << (char)185 << endl;					// ╣
 
 			count = 1;
 		}
@@ -501,7 +533,7 @@ void menu(bool full) {
 				break;
 			default:
 				WR;
-				cout << "\nInvalid option. Try again!\n";
+				cout << "Invalid option. Try again!\n";
 				WB;
 				break;
 			}
