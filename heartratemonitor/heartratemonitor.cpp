@@ -449,8 +449,8 @@ void additionalInfo(vector<double> means) {
 
 		// Inform how the mean rate has varied since user started running
 		WB;
-		cout << "  Since you started running, the mean variation has been: " 
-			 << varFirstWeek << '%' << endl;
+		cout << "  Since you started running, the mean variation has been: "
+			<< varFirstWeek << '%' << endl << endl;
 	}
 	else {
 		upperFrame();
